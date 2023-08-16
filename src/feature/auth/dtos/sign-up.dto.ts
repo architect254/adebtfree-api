@@ -10,8 +10,8 @@ export class SignUpCredentialsDto extends SignInCredentialsDto {
   name: string;
 
   @IsNotEmpty()
-  @IsEmail()
-  email: string;
+  @IsString()
+  username: string;
 
   @IsNotEmpty()
   @IsEnum(UserRole)

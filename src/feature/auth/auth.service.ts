@@ -22,11 +22,11 @@ export class AuthService {
   ) {}
 
   async signUp(credentials: SignUpCredentialsDto): Promise<User> {
-    const { password, email, name, role } = credentials;
+    const { password, username, name, role } = credentials;
 
     const user = new User();
     user.name = name;
-    user.email = email;
+    user.username = username;
     user.role = role;
     user.salt = await genSalt();
     user.password = await this.hashPassword(password, user.salt);
@@ -34,8 +34,8 @@ export class AuthService {
     try {
       return await this.userRepo.save(user);
     } catch (error) {
-      if (error.errno === 1062) {
-        throw new ConflictException('User exists');
+      if (error.code == '23505') {
+        throw new ConflictException('Failed! User exists');
       } else {
         throw new InternalServerErrorException(error.message);
       }
@@ -43,10 +43,10 @@ export class AuthService {
   }
 
   async signIn(credentials: SignInCredentialsDto) {
-    const { email, password } = credentials;
-    const user = await this.userRepo.findOne({where:{email}});
+    const { username, password } = credentials;
+    const user = await this.userRepo.findOne({where:{username}});
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Failed! User not found');
     }
     const isValid = await compare(password, user.password);
 

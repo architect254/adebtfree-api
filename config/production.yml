@@ -1,2 +1,4 @@
+jwt:
+  secret: "topSecretSecret001"
 db:
   synchronize: false
