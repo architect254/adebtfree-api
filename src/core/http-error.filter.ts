@@ -24,7 +24,7 @@ export class HttpErrorFilter implements ExceptionFilter {
     };
 
     Logger.error(
-      `${errorResponse.method} | ${errorResponse.path} | ${errorResponse.error} | ${errorResponse.code} | ${errorResponse.message}`,
+      `${errorResponse.method} | ${errorResponse.path} | ${errorResponse.code} | ${errorResponse.error} | ${errorResponse.message}`,
       exception.stack,
       'HttpErrorFilter',
     );
