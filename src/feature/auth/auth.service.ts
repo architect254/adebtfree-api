@@ -22,14 +22,13 @@ export class AuthService {
   ) {}
 
   async signUp(credentials: SignUpCredentialsDto): Promise<User> {
-    const { password, username, name, role } = credentials;
+    const { pin, username, role } = credentials;
 
     const user = new User();
-    user.name = name;
     user.username = username;
     user.role = role;
     user.salt = await genSalt();
-    user.password = await this.hashPassword(password, user.salt);
+    user.pin = await this.hashPassword(pin, user.salt);
 
     try {
       return await this.userRepo.save(user);
@@ -43,12 +42,12 @@ export class AuthService {
   }
 
   async signIn(credentials: SignInCredentialsDto) {
-    const { username, password } = credentials;
+    const { username, pin } = credentials;
     const user = await this.userRepo.findOne({where:{username}});
     if (!user) {
       throw new NotFoundException('Failed! User not found');
     }
-    const isValid = await compare(password, user.password);
+    const isValid = await compare(pin, user.pin);
 
     if (!isValid) {
       return null;
