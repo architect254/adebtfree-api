@@ -7,5 +7,5 @@ export class SignInCredentialsDto {
 
   @IsNotEmpty()
   @IsString()
-  password: string;
+  pin: string;
 }
